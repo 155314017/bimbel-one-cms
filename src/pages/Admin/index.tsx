@@ -1,31 +1,33 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Logo from "../assets/logo.png";
+import Logo from "../../assets/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
   faChartLine,
   faAddressCard,
-  faUser,
+  faChalkboardUser,
+  faGraduationCap,
 } from "@fortawesome/free-solid-svg-icons";
-import SettingButton from "../components/small/SettingButton";
-import LogoutButton from "../components/small/LogoutButton";
+import SettingButton from "../../components/small/SettingButton";
+import LogoutButton from "../../components/small/LogoutButton";
+import RegistrationTable from "./registration/RegistrationTable";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import DashboardPage from "./dashboard/DashboardPage";
-import RegistrationPage from "./registration/RegistrationPage";
-import UserPage from "./user/UserPage";
-import SettingPage from "./setting/SettingPage";
-export default function Dashboard() {
+import StudentTable from "./student/StudentTable";
+import DetailStudent from "./student/DetailStudent";
+import TeacherPage from "../Admin/teacher/TeacherPage";
+export default function AdminPage() {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   return (
     <Router>
-      <div className="flex z-50">
+      <div className="flex">
         {/* sidebar */}
         <div
           className={`${
             isCollapsed ? "w-20" : "w-52"
-          } bg-[#125B9A] h-screen p-5 pt-10 relative duration-300`}
+          } bg-[#125B9A] h-screen p-5 pt-10 sticky top-0 duration-300`}
         >
           {/* collapse button */}
           <button
@@ -39,7 +41,7 @@ export default function Dashboard() {
 
           {/* sidebar content */}
           <ul className="pt-8">
-            <Link to="/dashboard">
+            <Link to="/">
               <li
                 className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-blue-300 hover:shadow-md hover:text-[#125B9A] rounded-md mt-2 ${
                   isCollapsed ? "justify-center" : ""
@@ -53,8 +55,7 @@ export default function Dashboard() {
                 )}
               </li>
             </Link>
-
-            <Link to="/registration">
+            <Link to={"/admin/registration"}>
               <li
                 className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-blue-300 hover:shadow-md hover:text-[#125B9A] rounded-md mt-2 ${
                   isCollapsed ? "justify-center" : ""
@@ -68,41 +69,41 @@ export default function Dashboard() {
                 )}
               </li>
             </Link>
-            <Link to="/users">
+            <Link to={"/admin/student"}>
               <li
-                className={`text-gray-300 mb-10 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-blue-300 hover:shadow-md hover:text-[#125B9A] rounded-md mt-2 ${
+                className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-blue-300 hover:shadow-md hover:text-[#125B9A] rounded-md mt-2 ${
                   isCollapsed ? "justify-center" : ""
                 }`}
               >
                 <span className="text-xl">
-                  <FontAwesomeIcon icon={faUser} />
+                  <FontAwesomeIcon icon={faGraduationCap} />
                 </span>
                 {!isCollapsed && (
-                  <span className="text-base text-[14px] ml-1">User</span>
+                  <span className="text-base text-[14px] ">Student</span>
                 )}
               </li>
             </Link>
-            {/* <hr className="p-2" />
-          <li
-            className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-blue-300 hover:shadow-md hover:text-[#125B9A] rounded-md mt-2 ${
-              isCollapsed ? "justify-center" : ""
-            }`}
-          >
-            <span className="text-xl">
-              <FontAwesomeIcon icon={faArrowRightFromBracket} />
-            </span>
-            {!isCollapsed && (
-              <span className="text-base text-[14px]">Logout</span>
-            )}
-          </li> */}
+            <Link to={"/admin/teacher"}>
+            <li
+              className={`text-gray-300 mb-10 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-blue-300 hover:shadow-md hover:text-[#125B9A] rounded-md mt-2 ${
+                isCollapsed ? "justify-center" : ""
+              }`}
+              >
+              <span className="text-xl">
+                <FontAwesomeIcon icon={faChalkboardUser} />
+              </span>
+              {!isCollapsed && (
+                <span className="text-base text-[14px] ml-1">Teacher</span>
+              )}
+            </li>
+              </Link>
           </ul>
         </div>
 
         {/* Main Content */}
         <div className="flex-1">
-          <div className="w-full h-16 bg-white text-white flex items-center px-6 shadow-md justify-between">
+          <div className="w-full h-16 bg-white text-white flex items-center px-6 shadow-md justify-between sticky top-0 z-30">
             <img src={Logo} alt="bimbel-one" />
-
             <div className="flex items-center gap-x-6">
               <SettingButton />
               <LogoutButton />
@@ -112,10 +113,18 @@ export default function Dashboard() {
           {/* save area */}
           <div className="p-6">
             <Routes>
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/registration" element={<RegistrationPage />} />
-              <Route path="/users" element={<UserPage />} />
-              <Route path="/setting" element={<SettingPage />} />
+              <Route path="/" element={<DashboardPage />} />
+              <Route
+                path="/admin/registration"
+                element={<RegistrationTable />}
+              />
+              <Route path="/admin/student" element={<StudentTable />} />
+              <Route
+                path="/admin/detail-student/:id/:name"
+                element={<DetailStudent />}
+              />
+
+              <Route path="/admin/teacher" element={<TeacherPage />}/>
             </Routes>
           </div>
         </div>
