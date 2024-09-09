@@ -1,8 +1,13 @@
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import SelectField from "../../../components/small/SelectField";
-import { useState } from "react";
+import { Calendar, dayjsLocalizer } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import dayjs from "dayjs";
+
+const localizer = dayjsLocalizer(dayjs);
 
 export default function DetailStudent() {
   const [selectedOption, setSelectedOption] = useState("");
@@ -43,8 +48,14 @@ export default function DetailStudent() {
             placeholder="Teacher"
           />
         </div>
-        <div className="w-full h-[510px] bg-slate-300 rounded-lg flex justify-center items-center">
-          calendar here
+        <div className="w-full h-[510px] flex justify-center items-center">
+          <Calendar
+            localizer={localizer}
+            // events={myEventsList}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: "100%", width: "100%" }}
+          />
         </div>
       </div>
     </div>
