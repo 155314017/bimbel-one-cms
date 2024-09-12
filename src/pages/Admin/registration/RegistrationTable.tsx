@@ -1,35 +1,35 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import SearchBar from "../../../components/small/SearchBar";
 import { useEffect, useState } from "react";
-import { FetchDataRegistrasi } from "../../../services/API/FetchDataRegistrasi";
+import {
+  FetchDataRegistrasi,
+  DataRegistrasi,
+} from "../../../services/API/FetchDataRegistrasi";
 
 export default function RegistrationTable() {
-  
-
-  const [dataRegis, setDataRegis] = useState<any[]>([]);
+  const [dataRegis, setDataRegis] = useState<DataRegistrasi[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [accessToken] = useState<string>(localStorage.getItem("access_token")!);
-  
+
 
   useEffect(() => {
     const getData = async () => {
       try {
-        setLoading(true);
-        const data = await FetchDataRegistrasi(accessToken);
-        setDataRegis(Array.isArray(data) ? data : []);
-        setLoading(false);
+        const fetchedData = await FetchDataRegistrasi();
+        setDataRegis(fetchedData);
       } catch (error) {
         console.error(error);
+      } finally {
         setLoading(false);
       }
     };
+    getData();
+  }, []);
 
-    if (accessToken) {
-      getData();
-    }
-  }, [accessToken]);
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const displayData = dataRegis.slice(
     (page - 1) * rowsPerPage,
