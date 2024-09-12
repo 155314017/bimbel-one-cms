@@ -4,18 +4,20 @@ import { useEffect, useState } from "react";
 import { FetchDataRegistrasi } from "../../../services/API/FetchDataRegistrasi";
 
 export default function RegistrationTable() {
+  
+
   const [dataRegis, setDataRegis] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [accessToken] = useState<string>("");
+  const [accessToken] = useState<string>(localStorage.getItem("access_token")!);
+  
 
   useEffect(() => {
     const getData = async () => {
       try {
         setLoading(true);
         const data = await FetchDataRegistrasi(accessToken);
-        console.log(data);
         setDataRegis(Array.isArray(data) ? data : []);
         setLoading(false);
       } catch (error) {
